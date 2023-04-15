@@ -1,0 +1,87 @@
+\documentclass[12pt,oneside, openany]{book}
+
+
+\usepackage[paper = a4paper,
+	bindingoffset = 2mm,     %Offset for binding side of page
+	hmargin = 25mm,          %Left and right margin
+	vmargin = 25mm,          %Top and bottom margin
+	dvipdfm]
+	{geometry}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage[T1]{fontenc}	% Activate Type 1 fonts
+\usepackage{mathptmx}       % Use Times font, also for math
+\usepackage[scaled]{helvet} % for sans serif fonts (\textsf{...} or \sffamiliy)
+
+\usepackage{graphicx}       % Handles figures
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[mathcal]{euscript} % For calligraphy fonts
+\usepackage{booktabs}       % Publication quality tables
+\usepackage{setspace}       % Easy setting of line spacing
+
+\usepackage{hyperref} % makes table of contents clickable
+
+\usepackage{tocloft} % Required for modifying table of contents
+
+
+% Add dotted lines between chapter/section/subsection titles and page numbers
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+
+\hypersetup{hidelinks}
+
+\hypersetup{
+	colorlinks,      % Colored links
+	colorlinks,      % Colored links
+	citecolor=black,  % Color of cite links
+	linkcolor=black,  % Color of links
+	urlcolor=blue,   % Color of urls
+}
+
+\usepackage[style=apa, backend=biber]{biblatex}
+\usepackage{csquotes}
+
+
+\addbibresource{refrences.bib}
+
+\usepackage{titlesec}
+
+% Variables
+\newcommand{\thesisTitle}{Uncovering Insights: Maritime Shipping's Carbon Footprint}
+\newcommand{\thesisSubtitle}{Assessing the State of Carbon Dioxide Emissions in Maritime Shipping Through Big Data Analysis}
+\newcommand{\authorName}{Freddy Thobhani}
+\newcommand{\ProgramName}{Masters in Green Energy Technology (Smart Energy)}
+\newcommand{\DepartmentName}{Department of Engineering}
+\newcommand{\supervisorName}{Lucian Mihet-Popa}
+
+
+
+\begin{document}
+
+\include{pages/cover.tex}
+\include{pages/title.tex}
+
+\pagenumbering{roman} % Set page numbering to roman for the beginning
+
+\include{pages/chapters/abstract/abstract.tex}
+\include{pages/chapters/acknowledgements/acknowledgements.tex}
+
+\tableofcontents
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+
+\newpage
+\listoffigures
+
+
+
+
+\pagenumbering{arabic} % Switch back to arabic numbering for the first chapter
+\setlength{\parskip}{\baselineskip} % Set paragraph spacing to 1 line
+
+\include{pages/chapters/introduction/introduction.tex}
+
+\printbibliography
+\end{document}
