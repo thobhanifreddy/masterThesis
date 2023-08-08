@@ -7,6 +7,13 @@ Tradetable data is available in the \texttt{tradetable13bx} dataset. For each se
 
 The steps involved in the analysis are as follows:
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/methodlogy.png}
+    \caption{Methodlogy Overview}
+    \label{methodlogy}
+\end{figure}
+
 \newpage
 
 \subsubsection{1. Getting distinct IMO numbers from tradetable13bx}
@@ -166,11 +173,157 @@ As showin in Listing \ref{getEmission}.
 \end{lstlisting}
 
 
-\subsubsection{Calculating CII, CII required, and CII reference.}
+\subsubsection{5. Calculating CII, CII required, and CII reference.}
 
 Carbon Intensity Indicator (CII) is calculated as the ratio of emissions (CO\textsubscript{2}) to transport work (distance traveled $\times$ cargo amount). CII required is based on regulatory standards, while CII reference can be derived from historical data or benchmarks. Calculate these indicators for each tradeflow using the emission data and transport work values.
 
-\subsubsection{Calculating CII grade.}
+CII reference is calculated using the following formula:
 
-Based on the calculated CII and CII required, determine the CII grade for each tradeflow, indicating its compliance with emissions regulations. This can be done using predefined thresholds or standards to categorize tradeflows into different CII grades.
+\begin{equation}
+    CII_{\text{ref}} = a \cdot \text{Capacity}^{-C}
+\end{equation}
 
+where $a$ and $C$ are constants according to Figure \ref{cii_ref_constant}, and Capacity is the deadweight of the ship.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/cii_ref_constant.png}
+    \caption{$a$ and $C$ constants}
+    \label{cii_ref_constant}
+\end{figure}
+
+CII required can be calculated using the following formula:
+
+\begin{equation}
+    \text{Requited CII} = \left( \frac{100 -Z}{100}\right) \times \text{CIIRef}
+    \label{cii_required}
+\end{equation}
+
+In Equation 5.2, the reduction factor Z represents the initial value of 5\% in the year 2023,
+with an annual increment of 2\%. Additionally, for the years 2027 to 2030,
+the Z factors are subject to enhancement and refinement, guided by the evaluation of the short-term measure's effectiveness.
+
+\newpage
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{cc}
+        \toprule
+        Year & Reduction Factor (Z) \\
+        \midrule
+        2023 & 5\%                  \\
+        2024 & 7\%                  \\
+        2025 & 9\%                  \\
+        2026 & 11\%                 \\
+        2027 & **                   \\
+        2028 & **                   \\
+        2029 & **                   \\
+        2030 & **                   \\
+        \bottomrule
+    \end{tabular}
+    \caption{Reduction Factors Over the Years}
+    \label{tab:reduction-factors}
+\end{table}
+
+CII reference is calculated using the function shown in Listing \ref{cii_ref_function}.
+
+\begin{lstlisting}[language=python, caption=Function to calculate CII reference, label=cii_ref_function]
+    def calculateCIIRef(deadweight, shipType):
+        a = 0
+        c = 0
+        capacity = deadweight
+        if (shipType == "Bulk Carriers"):
+            a = 4745
+            c = 0.622
+            if (deadweight >= 279000):
+            capacity = 279000
+        elif (shipType == "Tankers"):
+            a = 5247
+            c = 0.61
+        elif (shipType == "LNG carriers"):
+            if capacity > 100000:
+            a = 9.827
+            c = 0
+            elif (capacity >= 65000 and capacity < 100000):
+            a = 14479E+10
+            c = 2.673
+            else:
+            capacity = 65000
+            a = 14479E+10
+            c = 2.673
+        elif (shipType == "Container ship"):
+            a = 1984
+            c = 0.489
+        return a * (capacity**(-c))
+\end{lstlisting}
+
+\newpage
+\subsubsection{6. Calculating CII grade.}
+
+Based on the calculated CII and CII required, determine the CII grade for each tradeflow, indicating its compliance with emissions regulations.
+This can be done using predefined thresholds or standards to categorize tradeflows into different CII grades.
+
+Taking into account that vessels will experience similar voyages in 2023 as they did in 2022, the CII grade for the end of 2023 can be estimated with a reduction factor Z set at 5.
+
+The $"dd"$ vector is established by calculating the ratio between Attained CII and Required CII.
+This ratio is subsequently compared against the thresholds for CII grades to ascertain the appropriate grade.
+The larger the deviation of the ratio, the lower the grade assigned, with A representing the best and E signifying the poorest performance.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/dd_vecotor.png}
+    \caption{$dd$ vectors for determining the rating boundaries of ship types}
+    \label{dd_vecotor}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.2\textwidth]{images/cii_grade_dd_grade.png}
+    \caption{CII grading based on $dd$ vector}
+    \label{cii_grade_dd_grade}
+\end{figure}
+
+Based on figure \ref{dd_vecotor}, the CII grade can be determined as represented in figure \ref{cii_grade_dd_grade}.
+
+For Bulk Carriers CII grade is determined as shown in Listing \ref{cii_grade_function}.
+
+\begin{lstlisting}[language=python, caption=Function to determine CII grading for Bulk Carriers, label=cii_grade_function]
+    def getGrade(cii,  ciiRequired):
+        ciiRatio = cii / ciiRequired
+        if (ciiRatio < 0.82): 
+            return "A"
+        elif (ciiRatio < 0.93):
+            return "B"
+        elif (ciiRatio < 1.08):
+            return "C"
+        elif (ciiRatio < 1.28):
+            return "D"
+        else:
+            return "E"
+\end{lstlisting}
+
+Following above 6 steps, we can calculate emissions, CII, CII required, CII reference and CII grade for each vessel.
+Results can be stored in a SQL table for further analysis.
+For each segment, we can perform above steps as showing in Listing \ref{analysis_segment}
+
+\begin{lstlisting}[language=python, caption=Analysis for capsize segment, label=analysis_segment]
+    capsizeImoQeury = spark.sql(f"""
+                       select distinct(imo) from capesize.tradetable13bx as st
+                       """)
+    startDate = '2022-01-01'
+    endDate = '2022-12-31'
+    segment = 'capesize'
+    capeSize = capsizeImoQeury.toPandas()
+    for imo in capeSize['imo']:
+    imoCIIData = getCIIGradeByImo(imo, startDate, endDate, segment, 5)
+    df = pd.DataFrame([imoCIIData])
+    spark.createDataFrame(df).write.mode("append").saveAsTable("emissions.capesize_cii_2022_v3")
+    time.sleep(5)
+\end{lstlisting}
+
+In listing \ref{analysis_segment}, we are getting distinct IMO numbers for capsize segment.
+Then for each IMO number, we are calling \texttt{getCIIGradeByImo} function to get emissions, CII, CII required, CII reference and CII grade.
+Using $spark.createDataFrame(df).write()$ we are storing results in SQL table.
+
+Based on the data obtained so far, we will analysis the results in the next chapter.
