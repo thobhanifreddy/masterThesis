@@ -1,16 +1,13 @@
 \chapter{Results}
 
-Based on the preceding analysis, we have derived the following parameters for each vessel, assuming they will engage in similar trade flows as observed in 2022, but in the year 2023. 
+Based on the preceding analysis, following parameters were derived for each vessel, assuming they will engage in similar trade flows as observed in 2022, but in the year 2023. 
 The vessels have been categorized into segments, facilitating a more intricate examination of the outcomes. The segments encompassed within this report include Capesize, Panamax, Supramax, Aframax, Suezmax, VLGC, and VLCC.
 
-The analysis encompassed a total of 4,741 vessels. 
+The analysis encompassed a total of 9,406 vessels. 
 The parameters acquired for each vessel comprise an array of emissions and indices, contributing to a comprehensive assessment. 
 These parameters encompass CO2 emissions, SO2 emissions, NOx emissions, PM emissions, NMVOC, CH4, N2O, CO, Black Carbon, Organic Carbon, EEOI, CII, and CII grade.
 
-
-\section{CII Grade}
-
-\subsection*{Grade Distribution}
+\section{Grade Distribution}
 
 \begin{figure}[h]
     \centering
@@ -33,7 +30,7 @@ It is evident that the Aframax segment has performed the best, with 80.3\% A-gra
 
 However, an overarching trend emerges, wherein approximately 70\% of vessels obtained grade A or B, while only 8\% of vessels attained grade D or E.
 
-\subsection{Grade Distribution Trend}
+\section{Grade Distribution Trend}
 
 \begin{figure}[h]
     \centering
@@ -48,7 +45,7 @@ Currently 70\% of vessels are in A or B grade, but in 2023 only about 50\% of ve
 
 \newpage
 
-\subsection{EEOI vs Grade}
+\section{EEOI vs Grade}
 
 \begin{figure}[h]
     \centering
@@ -63,6 +60,19 @@ Lower EEOI means vessels uses less fuel to achive same amount of work.
 Based on the above plot it is clear that vessels with lower EEOI have better grade.
 This signifies that vessels with lower EEOI are more fuel efficient and hence have better grade.
 
+\section{Average speed vs Grade}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/grade_speed.png}
+    \caption{Average Speed vs Grade}
+    \label{grade_speed}
+\end{figure}
+
+To understand if speed has any impact on grade, scatter plot of average speed vs grade is plotted.
+From the plot \ref{grade_speed} it is noticed that vessels with lower speed have better grade. 
+It is very clear that almost all the vessels with speed 12.5 knots or more have grade C or below.
+
+\section{Grade by Build Country}
 
 \begin{figure}[h]
     \centering
@@ -70,3 +80,25 @@ This signifies that vessels with lower EEOI are more fuel efficient and hence ha
     \caption{Grade By Build Country}
     \label{grade_by_build_country}
 \end{figure}
+
+Country where vessels are built can effect grade significantly as many parameters like materials, technology, regulations etc. can vary from country to country.
+To verify this hypothesis, grade distribution by build country is plotted in Figure \ref{grade_by_build_country}.
+To make the plot more readable, only top 3 countries China, Japan and South Korea were considered.
+
+From plot \ref{grade_by_build_country} it is clear that vessels built in Japan have better grade than vessels built in China or South Korea.
+
+
+\section{Emissions}
+
+Based on AF code emission API and vessel parameters, various emissions are calculated for each vessel grouped by segment.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/segment_emissions.png}
+    \caption{Percentage of Emissions by Segment}
+    \label{segment_emissions}
+\end{figure}
+
+Figure \ref{segment_emissions} shows percentage of emissions by segment.
+The analysis reveals a diverse emission profile across segments such as VLCC, VLG, Aframax, Panamax, Capesize, and Supramax. 
+Notably, the VLCC segment emerges as a significant contributor to emissions such as CO2, SO2, and NOx, highlighting potential areas for emission reduction strategies.
