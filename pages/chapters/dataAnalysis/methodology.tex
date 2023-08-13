@@ -3,7 +3,7 @@
 
 In this section, using tradeflow data for the year 2022, along with specifications from the IHS dataset, we will perform data analysis.
 
-Tradetable data is available in the \texttt{tradetable13bx} dataset. For each segments there is \texttt{tradetable13bx} and thereforre we will have to perform the analysis for each segment separately.
+Tradetable data is available in the trade flow dataset. For each segments there is trade flow and thereforre we will have to perform the analysis for each segment separately.
 
 The steps involved in the analysis are as follows:
 
@@ -22,7 +22,7 @@ Distinct IMO (International Maritime Organization) numbers were obtained from th
 This process helped in identifying all the unique ships present in the dataset, forming the foundation for further analysis.
 
 
-\subsubsection{2. Getting necessary information for each IMO number from IHS and tradetable13bx}
+\subsubsection{2. Getting necessary information for each IMO number from IHS and trade flow}
 
 For each distinct IMO number identified in the previous step, the IHS dataset was queried or joined with trade flow to gather relevant information about each ship. 
 This included details such as specifications, fuel type, engine types, and more. 
@@ -160,7 +160,7 @@ For each segment, we can perform above steps as showing in Listing \ref{analysis
 
 \begin{lstlisting}[language=python, caption=Analysis for capsize segment, label=analysis_segment]
     capsizeImoQeury = spark.sql(f"""
-                       select distinct(imo) from capesize.tradetable13bx as st
+                       select distinct(imo) from capesize.tradeFlow as st
                        """)
     startDate = '2022-01-01'
     endDate = '2022-12-31'
