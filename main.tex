@@ -30,6 +30,7 @@
 
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{caption}
 
 
 % Custom JSON language definition
@@ -100,16 +101,19 @@
 \newcommand{\thesisTitle}{Insights into Maritime Shipping's Carbon Footprint}
 \newcommand{\thesisSubtitle}{Assessing the State of Emissions in Maritime Shipping Through Big Data Analysis}
 \newcommand{\authorName}{Freddy Rameshchandra Thobhani}
-\newcommand{\ProgramName}{Masters in Green Energy Technology (Smart Energy)}
+\newcommand{\ProgramName}{Masters in Green Energy Technology (Smart Energy) }
 \newcommand{\DepartmentName}{Department of Engineering}
 \newcommand{\supervisorName}{Lucian Mihet-Popa}
 
+\captionsetup{font=small, labelfont=it, textfont=it}
 
 
 \begin{document}
 
 \include{pages/cover.tex}
 \include{pages/title.tex}
+
+\include{pages/Preface.tex}
 
 \pagenumbering{roman} % Set page numbering to roman for the beginning
 
@@ -138,6 +142,7 @@
 
 \include{pages/chapters/conclusion/conclusion.tex}
 
+\addcontentsline{toc}{chapter}{Bibliography}
 \printbibliography
 
 \end{document}
