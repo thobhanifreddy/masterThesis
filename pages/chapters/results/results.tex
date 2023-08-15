@@ -7,6 +7,26 @@ The analysis encompassed a total of 9,406 vessels.
 The parameters acquired for each vessel comprise an array of emissions and indices, contributing to a comprehensive assessment. 
 These parameters encompass CO2 emissions, SO2 emissions, NOx emissions, PM emissions, NMVOC, CH4, N2O, CO, Black Carbon, Organic Carbon, EEOI, CII, and CII grade.
 
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Segment} & \textbf{Count} \\
+        \hline
+        Supramax & 3051 \\
+        Capesize & 1837 \\
+        Panamax & 2020 \\
+        Aframax & 1209 \\
+        VLGC & 340 \\
+        VLCC & 949 \\
+        \hline
+    \end{tabular}
+    \caption{Vessel Count}
+    \label{tab:segments_counts}
+\end{table}
+
+\newpage
+
 \section{Grade Distribution}
 
 \begin{figure}[h]
@@ -16,10 +36,9 @@ These parameters encompass CO2 emissions, SO2 emissions, NOx emissions, PM emiss
     \label{grade_distribution}
 \end{figure}
 
-\newpage
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/combined_grade.png}
+    \includegraphics[width=0.6\textwidth]{images/combined_grade.png}
     \caption{Combined Grade}
     \label{combined_grade}
 \end{figure}
@@ -97,7 +116,7 @@ To understand if speed has any impact on grade, scatter plot of average speed vs
 From the plot \ref{grade_speed} it is noticed that vessels with lower speed have better grade. 
 It is very clear that almost all the vessels with speed 12.5 knots or more have grade C or below.
 
-\section{Grade by Build Country}
+\section{Build Country vs Grade}
 
 \begin{figure}[h]
     \centering
@@ -122,20 +141,21 @@ the application of low friction paint and Energy Saving Devices (ESD) to improve
 voyage optimization and fleet optimization, which may require preliminary examination but have a low to middle cost and depend on the ship's specific situation; 
 and slow steaming, which requires an analysis of monitoring results and estimation of cost-effectiveness. 
 These methods indicate a multifaceted approach that considers cost, effectiveness, and specific ship characteristics to overcome the challenges associated with a low CII rating. 
-The strategies emphasize both technological improvements and operational adjustments, reflecting an integrated approach to enhance environmental performance.
+The strategies emphasize both technological improvements and operational adjustments, reflecting an integrated approach to enhance environmental performance \autocite{Department_2023}.
 
 
 \section{Emissions}
 
 Based on AF code emission API and vessel parameters, various emissions are calculated for each vessel grouped by segment.
+Figure \ref{segment_emissions} shows percentage of emissions by segment.
 
-\begin{figure}[h]
+The analysis reveals a diverse emission profile across segments such as VLCC, VLG, Aframax, Panamax, Capesize, and Supramax. 
+Notably, the VLCC segment emerges as a significant contributor to emissions such as CO2, SO2, and NOx, highlighting potential areas for emission reduction strategies.
+
+\newpage
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/segment_emissions.png}
+    \includegraphics[width=1\textwidth]{images/segment_emissions.png}
     \caption{Percentage of Emissions by Segment}
     \label{segment_emissions}
 \end{figure}
-
-Figure \ref{segment_emissions} shows percentage of emissions by segment.
-The analysis reveals a diverse emission profile across segments such as VLCC, VLG, Aframax, Panamax, Capesize, and Supramax. 
-Notably, the VLCC segment emerges as a significant contributor to emissions such as CO2, SO2, and NOx, highlighting potential areas for emission reduction strategies.
